@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-
     <router-view />   
-
   </div>
 </template>
 
@@ -17,14 +15,12 @@
   color: #2c3e50;
 }
 
-
 #nav{
   width: 8%;
   margin-top:0;
   float: left;
   padding: 5px;
 }
-
 
 a {
     display: block;
@@ -41,6 +37,5 @@ a {
     color: #fff !important;
     text-decoration: none !important;
   }
-
 
 </style>

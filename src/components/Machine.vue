@@ -1,16 +1,18 @@
 <template>
-  <div class="maquina">
-    <div id="main-content">
 
-      <div class="container">
-			<div class="row coin-line">
+  	<div class="maquina">
 
-               <div class="col col-md-2">
+    	<div id="main-content">
+
+      		<div class="container">
+				<div class="row coin-line">
+
+               	<div class="col col-md-2">
                     <p>
                       <img class="size_40" src="https://img.icons8.com/carbon-copy/100/000000/wallet.png" />
                       <span class="wallet-total text-success">R$ {{ wallet | valueToBrl }}</span>
                     </p>
-               </div>
+               	</div>
 
                 <div class="col-md-8">
 
@@ -43,7 +45,9 @@
                     </ul>
 
                     <small>* Clique nas moedas para adicionar dinheiro em sua carteira virtual</small>
-              </div>
+
+              	</div>
+
             </div>
 
             <div class="row title-line">
@@ -52,23 +56,27 @@
                 </div>
             </div>
 
-          <div class="row">
-               <br><br><br><br>
+          	<div class="row">
+
+               	<br><br><br><br>
+
 				<div class="col col-md-3 col-sm-6 col-xs-6"  v-for="(product, index) in products">
 					<div class="item-product">
 						<img class="cafe-image img-fluid mx-auto d-block"  :src="product.image" />
+						
 						<div class="item-container">
 							<h4 class="text-center ">{{ product.name }} </h4>
 
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <b><span class="pull-left">Preço</span> <span class="pull-right">R$  {{ product.price | valueToBrl }}</span></b>
-                                </li>
-                                <li class="list-group-item">
-                                    <b><span class="pull-left">Tamanho</span> <span class="pull-right">300Ml</span></b>
-                                </li>
-                            </ul>
-                            <br>
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">
+									<b><span class="pull-left">Preço</span> <span class="pull-right">R$  {{ product.price | valueToBrl }}</span></b>
+								</li>
+								<li class="list-group-item">
+									<b><span class="pull-left">Tamanho</span> <span class="pull-right">300Ml</span></b>
+								</li>
+							</ul>
+							<br>
+
 							<div class="item-button text-center">
 								<button type="button" class="btn btn-outline-light" v-on:click="checkout( product.price, index )"  v-if="product.disabled">
 									<i class="fa fa-lock"></i>
@@ -80,114 +88,123 @@
 									Quero este!
 								</button>
 							</div>
+
 						</div>
+
 					</div>
+
 				</div>
+
 			</div>
 
         </div>
+
     </div>
 
-      </div>
+    </div>
+
     </div>
 </template>
 
 <script>
-export default {
-  name: "maquina",
-  data() {
-    return {
-      products: [
-        { name: "Café", price: 2.0, disabled: true, image: 'images/copo-cafe.png' },
-        { name: "Cappuccino", price: 3.5, disabled: true, image: 'images/copo-cappuccino.png' },
-        { name: "Mocha", price: 4.0, disabled: true, image: 'images/copo-mocha.png' },
-        { name: "Café com Leite", price: 3.0, disabled: true, image: 'images/copo-cafe.png' }
-      ],
-      wallet: 0.0,
-      cart: 0.0,
-      withdrawal: 0.0
-    };
-  },
 
-  computed: {
-  },
-
-  methods: {
-    addCents(value) {
-
-      if (value > 0.05 ) {
-		
-		this.wallet += value;
-		
-		// realiza o desbloqueio do produto para venda
-		for(let i = 0; i < this.products.length; i++){
-
-			if(this.products[i].price <= this.wallet ) {
-				this.products[i].disabled = false;
-			} else {
-				this.products[i].disabled = true;
-			}
-		};
-
-      } else {
-
-        this.$swal({
-          type: "error",
-          title: "Aconteceu um erro!",
-          text: "Essa maquina não aceita moedas de 1 ou 5 Centavos!"
-        });
-
-      }
-
-	},
-	lockBuy(){
-		for(let i = 0; i < this.products.length; i++){
-			this.products[i].disabled = true;
+	export default {
+	name: "maquina",
+	data() {
+		return {
+		products: [
+			{ name: "Café", price: 2.0, disabled: true, image: 'images/copo-cafe.png' },
+			{ name: "Cappuccino", price: 3.5, disabled: true, image: 'images/copo-cappuccino.png' },
+			{ name: "Mocha", price: 4.0, disabled: true, image: 'images/copo-mocha.png' },
+			{ name: "Café com Leite", price: 3.0, disabled: true, image: 'images/copo-cafe.png' }
+		],
+		wallet: 0.0,
+		cart: 0.0,
+		withdrawal: 0.0
 		};
 	},
-    checkout( cart, index ) {
-	  
-	  // recebe o estado da carteira, para não alterar os valores em data()
-	  let wallet = this.wallet;
 
-	  let products = this.products;
+	computed: {
+	},
 
-    	if ( wallet >= cart && wallet > 0) {
+	methods: {
+		addCents(value) {
+
+		if (value > 0.05 ) {
 			
-			let message = 'Você não possui troco.'
+			this.wallet += value;
+			
+			// realiza o desbloqueio do produto para venda
+			for(let i = 0; i < this.products.length; i++){
 
-			if( this.wallet - cart ) {
-				 message = "Seu troco é: R$ " +  this.$options.filters.valueToBrl(this.wallet - cart)
-			}
+				if(this.products[i].price <= this.wallet ) {
+					this.products[i].disabled = false;
+				} else {
+					this.products[i].disabled = true;
+				}
+			};
+
+		} else {
 
 			this.$swal({
-          		type: "success",
-          		title: "Obrigado pela preferência!",
-          		html: "Seu <b>" + products[index].name + "</b> já está sendo preparado. <br>" + message
+			type: "error",
+			title: "Aconteceu um erro!",
+			text: "Essa maquina não aceita moedas de 1 ou 5 Centavos!"
 			});
 
-			this.wallet = 0.00;
+		}
 
-			this.cart = 0.0;
-
-			this.lockBuy()
+		},
+		lockBuy(){
+			for(let i = 0; i < this.products.length; i++){
+				this.products[i].disabled = true;
+			};
+		},
+		checkout( cart, index ) {
 		
-      	} else {
+		// recebe o estado da carteira, para não alterar os valores em data()
+		let wallet = this.wallet;
 
-        	this.$swal({
-          		type: "error",
-          		title: "Erro!",
-          		text: "Você não possui crédito suficiente para comprar este produto. Adicione cédito clicando nas moedas acima!"
-			});		
-      	}
+		let products = this.products;
+
+			if ( wallet >= cart && wallet > 0) {
+				
+				let message = 'Você não possui troco.'
+
+				if( this.wallet - cart ) {
+					message = "Seu troco é: R$ " +  this.$options.filters.valueToBrl(this.wallet - cart)
+				}
+
+				this.$swal({
+					type: "success",
+					title: "Obrigado pela preferência!",
+					html: "Seu <b>" + products[index].name + "</b> já está sendo preparado. <br>" + message
+				});
+
+				this.wallet = 0.00;
+
+				this.cart = 0.0;
+
+				this.lockBuy()
+			
+			} else {
+
+				this.$swal({
+					type: "error",
+					title: "Erro!",
+					text: "Você não possui crédito suficiente para comprar este produto. Adicione cédito clicando nas moedas acima!"
+				});		
+			}
+		}
+
+	},
+	filters: {
+		valueToBrl: function(value) {
+		return value.toFixed(2).replace(".", ",");
+		}
 	}
-  },
-  filters: {
-    valueToBrl: function(value) {
-      return value.toFixed(2).replace(".", ",");
-    }
-  }
-};
+	}
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
